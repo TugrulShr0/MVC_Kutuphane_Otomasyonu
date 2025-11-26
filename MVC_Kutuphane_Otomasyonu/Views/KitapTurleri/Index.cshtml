@@ -1,0 +1,47 @@
+﻿@model List<MVC_Kutuphane_Otomasyonu_Entities.Model.KitapTurleri>
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div   class ="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                Kitap Türleri Listesi
+            </div>
+            <div class="ibox-body">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th> ID</th>
+                            <th>Kitap Türü </th>
+                            <th>Açıklama </th>
+                            <th>Düzenle </th>
+                            <th>Sil </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.ID</th>
+                                <td>@item.KitapTuru</td>
+                                <td>@item.Aciklama</td>
+                                <td><a href="/KitapTurleri/Duzenle/@item.ID" class="btn btn-warning">Düzenle</a></td>
+                                <td><a href="/KitapTurleri/Sil/@item.ID" class="btn btn-danger">Sil</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a href="/KitapTurleri/Ekle" class="btn btn-success">Yeni</a>
+
+            </div>
+
+
+
+        </div>
+    </div>
