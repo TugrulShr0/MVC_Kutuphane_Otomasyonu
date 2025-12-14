@@ -1,0 +1,84 @@
+﻿@model MVC_Kutuphane_Otomasyonu_Entities.Model.Kullanicilar
+@{
+    ViewBag.Title = "SifremiUnuttum";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width initial-scale=1.0">
+    <title>Admincast bootstrap 4 &amp; MVC Kütüphane Otomasyonu | Şifremi Unuttum</title>
+
+    <!-- GLOBAL MAINLY STYLES-->
+    <link href="~/AdminDashboard/admincast-master/html/dist/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- THEME STYLES-->
+    <link href="~/AdminDashboard/admincast-master/html/dist/assets/css/main.css" rel="stylesheet" />
+
+    <!-- PAGE LEVEL STYLES-->
+    <link href="~/AdminDashboard/admincast-master/html/dist/assets/css/pages/auth-light.css" rel="stylesheet" />
+
+    <!-- LOGO/YAZI GÖRÜNMESİ İÇİN ZORUNLU OVERRIDE -->
+    <style>
+        .brand {
+            display: block !important;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .brand .link {
+            color: #000 !important;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .content {
+            max-width: 420px;
+            margin: 60px auto;
+        }
+    </style>
+
+</head>
+
+<body class="bg-silver-300">
+
+    <div class="content">
+
+        <!-- ÜST LOGO / YAZI -->
+        <div class="brand">
+            <a class="link" href="/Kitaplar/Index">MVC Kütüphane Otomasyonu</a>
+        </div>
+
+        @using (Html.BeginForm("SifremiUnuttum", "Kullanicilar", FormMethod.Post))
+        {
+
+            @Html.AntiForgeryToken()
+         
+
+
+            <h3 class="m-t-10 m-b-10 text-center">Şifremi Unuttum</h3>
+            <p class="m-b-20 text-center">
+                İşlem sonunda mail adresinize yeni şifre gönderilecektir.
+            </p>
+
+            <div class="form-group">
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Email" })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div><div>
+                @if (ViewBag.hata != null)
+                {
+                    <label class="text-danger">@ViewBag.hata</label>
+                }
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-info btn-block" type="submit">Gönder</button>
+            </div>
+        }
+    </div>
+
+    <!-- PAGE BACKDROPS -->

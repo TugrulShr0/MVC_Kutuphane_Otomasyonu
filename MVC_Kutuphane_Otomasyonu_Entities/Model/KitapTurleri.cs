@@ -13,17 +13,9 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Model
     [Validator(typeof(KitapTurleriValidator))]
     public class KitapTurleri
     {
-     
         public int ID { get; set; }
-
-        [Required(ErrorMessage = "Kitap türü boş olamaz!")]
-        [MaxLength(50)]
         public string KitapTuru { get; set; }
-
-        [StringLength(500, ErrorMessage = "Açıklama en fazla 500 karakter olabilir.")]
         public string Aciklama { get; set; } = "";
-        
-
         public List<Kitaplar> Kitaplar { get; set; } = new List<Kitaplar>();   // Bir türün birden fazla kitabı olabilir
     }
 }

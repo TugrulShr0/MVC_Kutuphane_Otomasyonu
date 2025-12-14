@@ -1,0 +1,45 @@
+﻿
+
+
+@model MVC_Kutuphane_Otomasyonu_Entities.Model.Roller
+@{
+    ViewBag.Title = "Duzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                <b>Rol Düzenleme Sayfası</b>
+            </div>
+            <div class="ibox-body">
+                @using (Html.BeginForm("Duzenle", "Roller", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Rol)
+                        @Html.TextBoxFor(x => x.Rol, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Rol, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info">Kaydet</button>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

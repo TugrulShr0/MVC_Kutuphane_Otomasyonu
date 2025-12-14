@@ -1,0 +1,53 @@
+﻿
+
+
+
+
+@model MVC_Kutuphane_Otomasyonu_Entities.Model.KullanıcıRolleri
+@{
+    ViewBag.Title = "Duzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                <b>@ViewBag.kullaniciAdı İçin Rol Ekleme İşlemi</b>
+            </div>
+            <div class="ibox-body">
+                @using (Html.BeginForm("Duzenle", "KullaniciRolleri", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.HiddenFor(x => x.KullanıcıID)
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KullanıcıID)
+                        @Html.TextBoxFor(x => x.KullanıcıID, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KullanıcıID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.RolId)
+                        @Html.DropDownListFor(x => x.RolId, (SelectList)ViewBag.Liste, "-Seçim Yapınız-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.RolId, "", new { @class = "text-danger" })
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info">Kaydet</button>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

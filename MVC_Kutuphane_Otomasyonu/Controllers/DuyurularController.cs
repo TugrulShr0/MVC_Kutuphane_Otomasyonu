@@ -1,128 +1,104 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
+﻿using MVC_Kutuphane_Otomasyonu_Entities.DAL;
 using MVC_Kutuphane_Otomasyonu_Entities.Model;
 using MVC_Kutuphane_Otomasyonu_Entities.Model.Context;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Services.Description;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
     public class DuyurularController : Controller
     {
-        private KutuphaneContext db = new KutuphaneContext();
-
         // GET: Duyurular
+        KutuphaneContext context = new KutuphaneContext();
+        DuyurularDAL duyurularDAL = new DuyurularDAL();
         public ActionResult Index()
-        {
-            return View(db.Duyurular.ToList());
-        }
-
-        // GET: Duyurular/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Duyurular duyurular = db.Duyurular.Find(id);
-            if (duyurular == null)
-            {
-                return HttpNotFound();
-            }
-            return View(duyurular);
-        }
-
-        // GET: Duyurular/Create
-        public ActionResult Create()
         {
             return View();
         }
-
-        // POST: Duyurular/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Baslik,Duyuru,Aciklama,Tarih")] Duyurular duyurular)
+        public JsonResult DuyuruList()
         {
+            var model = duyurularDAL.GetAll(context);
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DuyuruEkle(Duyurular entity)
+        {
+            // ID > 0 ise UPDATE yapılıyor demektir. ID validasyonunu temizle.
+            if (entity.ID > 0)
+            {
+                ModelState["ID"]?.Errors.Clear();
+            }
+
             if (ModelState.IsValid)
             {
-                db.Duyurular.Add(duyurular);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (entity.ID > 0)
+                {
+                    // ----------------------------------------------------
+                    // !!! GÜNCELLEME İŞLEMİ DÜZELTİLDİ !!!
+                    // ----------------------------------------------------
+
+                    var model = context.Duyurular.Find(entity.ID);
+
+                    if (model != null)
+                    {
+                        // Formdan gelen yeni değerleri, veritabanından çekilen kaydın üzerine yazıyoruz.
+                        model.Baslik = entity.Baslik;
+                        model.Duyuru = entity.Duyuru;
+                        model.Aciklama = entity.Aciklama;
+                        model.Tarih = entity.Tarih;
+
+                        // Bu nesne zaten Context tarafından takip edildiği için DAL'daki update metoduna
+                        // gerek yok, direkt SaveChanges diyebiliriz.
+                        context.SaveChanges();
+                    }
+                    return Json(new { success = true, message = entity.ID + " Nolu Duyuru Başarıyla Güncellendi." });
+                }
+                else
+                {
+                    // ----------------------------------------------------
+                    // YENİ KAYIT İŞLEMİ
+                    // ----------------------------------------------------
+                    duyurularDAL.insertupdate(context, entity);
+                    duyurularDAL.save(context);
+                    return Json(new { success = true, message = "Yeni Duyuru Başarıyla Eklendi." });
+                }
             }
 
-            return View(duyurular);
-        }
-
-        // GET: Duyurular/Edit/5
-        public ActionResult Edit(int? id)
+            // Hata varsa geri döndür
+            var errors = ModelState.ToDictionary(
+                x => x.Key,
+                x => x.Value.Errors.Select(a => a.ErrorMessage).ToArray()
+            );
+            return Json(new { success = false, errors }, JsonRequestBehavior.AllowGet);
+        }         
+        
+        public JsonResult DuyuruGetir(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Duyurular duyurular = db.Duyurular.Find(id);
-            if (duyurular == null)
-            {
-                return HttpNotFound();
-            }
-            return View(duyurular);
+          var model =  duyurularDAL.GetByFilter(context, x=>x.ID==id);
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
-
-        // POST: Duyurular/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        public JsonResult DuyuruSil(int? id)
+        {
+            duyurularDAL.delete(context, x => x.ID == id);
+            duyurularDAL.save(context);
+            return Json(new { success = true });
+        }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Baslik,Duyuru,Aciklama,Tarih")] Duyurular duyurular)
+        public JsonResult SeciliDuyuruSil(List<int> selectedIds)
         {
-            if (ModelState.IsValid)
+            if (selectedIds!=null)
             {
-                db.Entry(duyurular).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                foreach (var id in selectedIds)
+                {
+                    duyurularDAL.delete(context, x => x.ID == id);
+                    duyurularDAL.save(context);
+                }
+                return Json(new { success = true });
             }
-            return View(duyurular);
-        }
-
-        // GET: Duyurular/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Duyurular duyurular = db.Duyurular.Find(id);
-            if (duyurular == null)
-            {
-                return HttpNotFound();
-            }
-            return View(duyurular);
-        }
-
-        // POST: Duyurular/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Duyurular duyurular = db.Duyurular.Find(id);
-            db.Duyurular.Remove(duyurular);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
+            return Json(new { success = false });   
         }
     }
 }

@@ -1,0 +1,89 @@
+﻿
+
+
+@model MVC_Kutuphane_Otomasyonu_Entities.Model.Kitaplar
+@{
+    ViewBag.Title = "Düzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+<div class="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                <b>Kitap Düzenleme Sayfası</b> 
+            </div>
+            <div class="ibox-body">
+                @using (Html.BeginForm("Duzenle", "Kitaplar", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KitapTurleri.KitapTuru)
+                        @Html.DropDownListFor(x => x.KitapTürüId, (SelectList)ViewBag.Liste, "-Seçim Yapınız-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KitapTürüId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.BarkodNo)
+                        @Html.TextBoxFor(x => x.BarkodNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BarkodNo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KitapAdı)
+                        @Html.TextBoxFor(x => x.KitapAdı, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KitapAdı, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Yazar)
+                        @Html.TextBoxFor(x => x.Yazar, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Yazar, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Yayinevi)
+                        @Html.TextBoxFor(x => x.Yayinevi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Yayinevi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.StokAdedi)
+                        @Html.TextBoxFor(x => x.StokAdedi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.StokAdedi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.SayfaSayisi)
+                        @Html.TextBoxFor(x => x.SayfaSayisi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SayfaSayisi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.EklenmeTarihi)
+                        @Html.TextBoxFor(x => x.EklenmeTarihi, new { @class = "form-control", type = "datetime-local", Value = Model.EklenmeTarihi.ToString("yyyy-MM-dd HH:mm") })
+                        @Html.ValidationMessageFor(model => model.EklenmeTarihi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.SilindiMi)
+                        @Html.CheckBoxFor(x => x.SilindiMi)
+                
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Aciklama)
+                        @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control" })
+
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-warning">Düzenle</button>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

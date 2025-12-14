@@ -1,12 +1,21 @@
-﻿@model List<MVC_Kutuphane_Otomasyonu_Entities.Model.KitapTurleri>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+
+@model PagedList.IPagedList<MVC_Kutuphane_Otomasyonu_Entities.Model.KitapTurleri>
 
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<form action="Index2">
+    <label style="font-weight:bold">Kitap Türü Ara : </label>
+    @Html.TextBox("ara")
 
-<div   class ="row">
+    <button type="submit"> Ara </button>
+</form>
+<div class="row">
     <div class="col-lg">
 
         <div class="ibox">
@@ -37,11 +46,19 @@
                         }
                     </tbody>
                 </table>
+                @Html.PagedListPager(Model, page => Url.Action("Index", "KitapTurleri", new { page, ara = Request.QueryString["ara"] }), new PagedListRenderOptions
+           {
+               FunctionToTransformEachPageLink = (li, a) =>
+               {
+
+                   a.AddCssClass("page-link");
+                   li.InnerHtml = a.ToString();
+                   return li;
+               },
+
+           })
+
                 <a href="/KitapTurleri/Ekle" class="btn btn-success">Yeni</a>
-
             </div>
-
-
-
         </div>
     </div>

@@ -13,6 +13,7 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Validations
         public KitaplarValidator()
         {
             RuleFor(x => x.BarkodNo).NotEmpty().WithMessage("Barkod NO boş geçilemez.");
+            RuleFor(x => x.KitapTürüId).NotEmpty().WithMessage("Kitap Türü Alanı boş geçilemez.");
             RuleFor(x => x.KitapAdı).NotEmpty().WithMessage("Kitap Adı boş geçilemez.");
             RuleFor(x => x.Yazar).NotEmpty().WithMessage("Yazar boş geçilemez.");
             RuleFor(x => x.Yayinevi).NotEmpty().WithMessage("Yayınevi boş geçilemez.");

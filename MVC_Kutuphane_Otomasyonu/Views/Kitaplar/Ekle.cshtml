@@ -1,0 +1,75 @@
+﻿
+
+
+@model MVC_Kutuphane_Otomasyonu_Entities.Model.Kitaplar
+@{
+    ViewBag.Title = "Ekle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                <b>Kitap Türü Ekleme Sayfası</b>
+            </div>
+            <div class="ibox-body">
+                @using (Html.BeginForm("Ekle", "Kitaplar", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KitapTurleri.KitapTuru)
+                        @Html.DropDownListFor(x => x.KitapTürüId, (SelectList)ViewBag.Liste,"-Seçim Yapınız-",new {@class="form-control"})
+                        @Html.ValidationMessageFor(model => model.KitapTürüId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.BarkodNo)
+                        @Html.TextBoxFor(x => x.BarkodNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.BarkodNo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KitapAdı)
+                        @Html.TextBoxFor(x => x.KitapAdı, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KitapAdı, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Yazar)
+                        @Html.TextBoxFor(x => x.Yazar, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Yazar, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Yayinevi)
+                        @Html.TextBoxFor(x => x.Yayinevi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Yayinevi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.StokAdedi)
+                        @Html.TextBoxFor(x => x.StokAdedi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.StokAdedi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.SayfaSayisi)
+                        @Html.TextBoxFor(x => x.SayfaSayisi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SayfaSayisi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Aciklama)
+                        @Html.TextAreaFor(x => x.Aciklama, new { @class = "form-control" })
+                        @*@Html.ValidationMessageFor(model => model.Aciklama, "", new { @class = "text-danger" })*@
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Ekle</button>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

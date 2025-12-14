@@ -22,7 +22,7 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Model
         public string Aciklama { get; set; }   
         public DateTime EklenmeTarihi { get; set; }= DateTime.Now;
         public DateTime GuncellenmeTarihi { get; set; }= DateTime.Now;
-        public bool SilindiMi { get; set; }
+        public bool SilindiMi { get; set; }=false;
         public KitapTurleri KitapTurleri { get; set; } // Her kitabın bir türü vardır
 
         public List<EmanetKitaplar> EmanetKitaplar { get; set; } // Bir kitabın birden fazla emanet kaydı olabilir

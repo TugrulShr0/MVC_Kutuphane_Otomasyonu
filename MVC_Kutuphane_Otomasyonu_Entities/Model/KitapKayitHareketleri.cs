@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MVC_Kutuphane_Otomasyonu_Entities.Model
 {
-    [Validator(typeof(kitapkayıt))]
+    [Validator(typeof(KitapKayitHareketleri))]
     public class KitapKayitHareketleri
     {
         public int ID { get; set; }

@@ -1,0 +1,94 @@
+﻿@model MVC_Kutuphane_Otomasyonu_Entities.Model.Duyurular
+
+
+
+<div class="row">
+    <div class="col-lg">
+        <div class="form-group">
+            <button class="btn btn-danger" type="submit" id="silButton"> Seçili Sil</button>
+        </div>
+        <div class="ibox">
+            <div class="ibox-head">
+
+                Duyuru Listesi
+            </div>
+            <div class="ibox-body">
+                <table class="table table-bordered table-striped" id="tbl">
+                    <thead>
+                        <tr>
+                            <td><input type="checkbox" id="tdCheck" /></td>
+                            <th>Id</th>
+                            <th>Başlık</th>
+                            <th>Duyuru</th>
+                            <th>Açıklama</th>
+                            <th>Tarih</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    <!-- Yeni Duyuru Butonu -->
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#dataModal" onclick="Ekle()">
+                        Yeni Duyuru
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" id="dataModalLabel">Duyuru Ekleme Sayfası</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="data-form">
+
+                    <div class="form-group">
+                        <input type="hidden" id="ID" name="ID" />
+
+
+
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(a => a.Baslik, new { @class = "form-control", placeholder = "Başlık", id = "txtBaslik" })
+                        @*@Html.ValidationMessageFor(x => x.Baslik, "", new { @class = "text-danger" })*@
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Baslik" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(a => a.Duyuru, new { @class = "form-control", placeholder = "Duyuru", id = "txtDuyuru" })
+                        @Html.ValidationMessageFor(x => x.Duyuru, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextAreaFor(a => a.Aciklama, new { @class = "form-control", placeholder = "Açıklama", id = "txtAciklama" })
+                        @*@Html.ValidationMessageFor(x => x.Aciklama, "", new { @class = "text-danger" })*@
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(a => a.Tarih, new { @class = "form-control", type = "datetime-local", id = "txtTarih" })
+                        @Html.ValidationMessageFor(x => x.Tarih, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
