@@ -12,9 +12,9 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Interfaces
         where TContext : DbContext, new()//DbContext'ten türeyen bir context olmalı ve new'lenebilir
         where TEntity : class, new()//Entity class'ı olmalı ve new'lenebilir
     {
-        List<TEntity> GetAll(TContext context,Expression<Func<TEntity, bool> >filter = null, string tbl = null);//Tüm verileri getirme null ise filtre uygulama
+        List<TEntity> GetAll(TContext context,Expression<Func<TEntity, bool> >filter = null, params string[] tbl);//Tüm verileri getirme null ise filtre uygulama
 
-        TEntity GetByFilter(TContext context, Expression<Func<TEntity, bool>> filter,string tbl = null);//Filtreye göre tek bir veri getirme
+        TEntity GetByFilter(TContext context, Expression<Func<TEntity, bool>> filter,params string[] tbl);//Filtreye göre tek bir veri getirme
 
         TEntity GetByID(TContext context, int? id);//ID'ye göre veri getirme
 

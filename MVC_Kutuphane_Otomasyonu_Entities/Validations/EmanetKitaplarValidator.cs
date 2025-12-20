@@ -15,7 +15,7 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Validations
             RuleFor(x => x.UyeID).NotEmpty().WithMessage("Üye ID boş geçilemez.");
             RuleFor(x => x.KitapID).NotEmpty().WithMessage("Kitap ID boş geçilemez.");
             RuleFor(x => x.EmanetTarihi).NotEmpty().WithMessage("Emanet tarihi boş geçilemez.");
-            RuleFor(x => x.IadeTarihi).NotEmpty().WithMessage("İade tarihi boş geçilemez.");
+            //RuleFor(x => x.IadeTarihi).NotEmpty().WithMessage("İade tarihi boş geçilemez.");
         }
     }
 }

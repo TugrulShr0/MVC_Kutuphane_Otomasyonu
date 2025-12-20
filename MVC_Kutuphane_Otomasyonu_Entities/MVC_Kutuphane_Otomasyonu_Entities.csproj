@@ -65,7 +65,7 @@
     <Compile Include="DAL\HakkimizdaDAL.cs" />
     <Compile Include="DAL\IletisimDAL.cs" />
     <Compile Include="DAL\KitapHareketleriDAL.cs" />
-    <Compile Include="DAL\KitapKayıtHareketlerı.cs" />
+    <Compile Include="DAL\KitapKayıtHareketlerıDAL.cs" />
     <Compile Include="DAL\KitaplarDAL.cs" />
     <Compile Include="DAL\KitapTurleriDAL.cs" />
     <Compile Include="DAL\KullanıcıHareketleriDAL.cs" />

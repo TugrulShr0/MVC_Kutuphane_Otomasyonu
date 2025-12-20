@@ -1,4 +1,5 @@
 ﻿using MVC_Kutuphane_Otomasyonu_Entities.DAL;
+using MVC_Kutuphane_Otomasyonu_Entities.Mapping;
 using MVC_Kutuphane_Otomasyonu_Entities.Model;
 using MVC_Kutuphane_Otomasyonu_Entities.Model.Context;
 using System;
@@ -15,6 +16,24 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         // GET: Kitaplar
         KutuphaneContext context = new KutuphaneContext();
         KitaplarDAL KitaplarDal = new KitaplarDAL();
+        KitapKayıtHareketlerıDAL KitapKayitHareketleriDal = new KitapKayıtHareketlerıDAL();
+        KullanıcılarDAL KullanıcılarDal = new KullanıcılarDAL();
+        public void KitapKayitHareketleri(int kullaniciId,int kitapId,string yapilanIslem,string aciklama)
+        {
+            var model = new KitapKayitHareketleri
+            {
+                Aciklama = aciklama,
+                KullanıcıID = kullaniciId,
+                KitapID = kitapId,
+                Tarih = DateTime.Now,
+                YapılanIslem = yapilanIslem
+
+            }; 
+            KitapKayitHareketleriDal.insertupdate(context, model);
+            KitapKayitHareketleriDal.save(context);
+
+
+        }
         public ActionResult Index()
         {
             var model = KitaplarDal.GetAll(context,null,"KitapTurleri");
@@ -38,6 +57,13 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
 
             context.Kitaplar.Add(entity);
             context.SaveChanges();
+
+            int kitapId =context.Kitaplar.Max(x=>x.ID);
+            var userName = User.Identity.Name;
+            var modelKullanici = KullanıcılarDal.GetByFilter(context, x => x.Email == userName);
+            int kullaniciId =modelKullanici.ID;
+            KitapKayitHareketleri(kullaniciId,kitapId,modelKullanici.KullanıcıAdı+"kullanıcısı yeni bir kitap ekledi.","Kitap Ekleme İşlemi Gerçekleştirildi");
+
             return RedirectToAction("Index");
         }
         public ActionResult Duzenle(int? id)
@@ -63,6 +89,12 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
 
             context.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             context.SaveChanges();
+
+            int kitapId = entity.ID;
+            var userName = User.Identity.Name;
+            var modelKullanici = KullanıcılarDal.GetByFilter(context, x => x.Email == userName);
+            int kullaniciId = modelKullanici.ID;
+            KitapKayitHareketleri(kullaniciId, kitapId, modelKullanici.KullanıcıAdı + " kullanıcısı kitap üzerinde değişiklik yaptı.", "Kitap Düzenleme İşlemi Gerçekleştirildi");
             return RedirectToAction("Index");
         }
 

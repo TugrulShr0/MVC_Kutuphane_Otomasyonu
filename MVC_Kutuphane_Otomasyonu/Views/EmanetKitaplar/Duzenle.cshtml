@@ -1,0 +1,63 @@
+﻿
+
+
+
+@model MVC_Kutuphane_Otomasyonu_Entities.Model.EmanetKitaplar
+@{
+    ViewBag.Title = "Duzenle";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg">
+
+        <div class="ibox">
+            <div class="ibox-head">
+                <b>Emanet Kitap Düzenleme Sayfası</b>
+            </div>
+            <div class="ibox-body">
+                @using (Html.BeginForm("Duzenle", "EmanetKitaplar", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.ID)
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.Uyeler.AdSoyad)
+                        @Html.DropDownListFor(x => x.UyeID, (SelectList)ViewBag.Uyeliste, "-Seçim Yapınız-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.UyeID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.kitaplar.KitapAdı)
+                        @Html.DropDownListFor(x => x.KitapID, (SelectList)ViewBag.Kitapliste, "-Seçim Yapınız-", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KitapID, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.KitapSayisi)
+                        @Html.TextBoxFor(x => x.KitapSayisi, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.KitapSayisi, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        @Html.DisplayNameFor(x => x.EmanetTarihi)
+                        @Html.TextBoxFor(x => x.EmanetTarihi, new
+                        {
+                            @class = "form-control",
+                            type = "datetime-local",
+                            Value = Model != null ? Model.EmanetTarihi.ToString("yyyy-MM-ddTHH:mm") : DateTime.Now.ToString("yyyy-MM-ddTHH:mm")
+                        })                        @Html.ValidationMessageFor(model => model.EmanetTarihi, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Onay</button>
+                    </div>
+
+                }
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

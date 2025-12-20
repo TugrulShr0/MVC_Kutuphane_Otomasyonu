@@ -58,7 +58,7 @@
         <!-- START HEADER-->
         <header class="header">
             <div class="page-brand">
-                <a class="link" href="index.html">
+                <a class="link" href="/Kitaplar/Index/">
                     <span class="brand">
                         @kullaniciAdi
                         <span class="brand-tip"></span>
@@ -84,7 +84,7 @@
                 <!-- END TOP-LEFT TOOLBAR-->
                 <!-- START TOP-RIGHT TOOLBAR-->
                 <ul class="nav navbar-toolbar">
-                    <li class="dropdown dropdown-inbox">
+                    <!--<li class="dropdown dropdown-inbox">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown">
                             <i class="fa fa-envelope-o"></i>
                             <span class="badge badge-primary envelope-badge">9</span>
@@ -95,7 +95,7 @@
                                     <span><strong>9 New</strong> Messages</span>
                                     <a class="pull-right" href="mailbox.html">Hepsi</a>
                                 </div>
-                            </li>
+                            </li>-->
                             @*<li class="list-group list-group-divider scroller" data-height="240px" data-color="#71808f">
                                     <div>
                                         <a class="list-group-item">
@@ -144,8 +144,8 @@
                                         </a>
                                     </div>
                                 </li>*@
-                        </ul>
-                    </li>
+                        <!--</ul>
+                    </li>-->
                     @*<li class="dropdown dropdown-notification">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o rel"><span class="notify-signal"></span></i></a>
                             <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
@@ -207,11 +207,17 @@
                             <span></span>@kullaniciAdi<i class="fa fa-angle-down m-l-5"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-user"></i>Profil</a>
-                            <a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Ayarlar</a>
+                            @{ 
+                                var userName = User.Identity.Name;//kullanıcının email bilgisi
+                                var model = context.Kullanicilar.FirstOrDefault(x => x.Email == userName);
+                                int Id = model.ID;
+                            }
+
+                            <a class="dropdown-item" href="/Kullanicilar/Duzenle/@Id"><i class="fa fa-user"></i>Profil</a>
+                            @*<a class="dropdown-item" href="profile.html"><i class="fa fa-cog"></i>Ayarlar</a>*@
                             @*<a class="dropdown-item" href="javascript:;"><i class="fa fa-support"></i>Support</a>
                                 <li class="dropdown-divider"></li>*@
-                            <a class="dropdown-item" href="login.html"><i class="fa fa-power-off"></i>Çıkış</a>
+                            <a class="dropdown-item" href="/Kullanicilar/Cikis/"><i class="fa fa-power-off"></i>Çıkış</a>
                         </ul>
                     </li>
                 </ul>
@@ -232,7 +238,7 @@
                 </div>
                 <ul class="side-menu metismenu">
                     <li>
-                        <a class="active" href="index.html">
+                        <a class="active" href="/Kitaplar/Index/">
                             <i class="sidebar-item-icon fa fa-th-large"></i>
                             <span class="nav-label">Dashboard</span>
                         </a>
@@ -273,7 +279,7 @@
                                 </li>
                             </ul>
                         </li>*@
-                    <li>
+                    @*<li>
                         <a href="javascript:;">
                             <i class="sidebar-item-icon fa fa-edit"></i>
                             <span class="nav-label">Forms</span><i class="fa fa-angle-left arrow"></i>
@@ -295,8 +301,8 @@
                                 <a href="text_editors.html">Text Editors</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
+                    </li>*@
+                    @*<li>
                         <a href="javascript:;">
                             <i class="sidebar-item-icon fa fa-table"></i>
                             <span class="nav-label">Tables</span><i class="fa fa-angle-left arrow"></i>
@@ -309,28 +315,20 @@
                                 <a href="datatables.html">Datatables</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>*@
                     <li>
                         <a href="javascript:;">
                             <i class="sidebar-item-icon fa fa-bar-chart"></i>
-                            <span class="nav-label">Charts</span><i class="fa fa-angle-left arrow"></i>
+                            <span class="nav-label">İstatistikler</span><i class="fa fa-angle-left arrow"></i>
                         </a>
                         <ul class="nav-2-level collapse">
                             <li>
-                                <a href="charts_flot.html">Flot Charts</a>
+                                <a href="/Istatistikler/Index/">Analizler</a>
                             </li>
-                            <li>
-                                <a href="charts_morris.html">Morris Charts</a>
-                            </li>
-                            <li>
-                                <a href="chartjs.html">Chart.js</a>
-                            </li>
-                            <li>
-                                <a href="charts_sparkline.html">Sparkline Charts</a>
-                            </li>
+                         
                         </ul>
                     </li>
-                    <li>
+                    @*<li>
                         <a href="javascript:;">
                             <i class="sidebar-item-icon fa fa-map"></i>
                             <span class="nav-label">Maps</span><i class="fa fa-angle-left arrow"></i>
@@ -340,7 +338,7 @@
                                 <a href="maps_vector.html">Vector maps</a>
                             </li>
                         </ul>
-                    </li>
+                    </li>*@
                     @*<li>
                             <a href="icons.html">
                                 <i class="sidebar-item-icon fa fa-smile-o"></i>
@@ -384,11 +382,22 @@
                                 @Html.ActionLink("Kitaplar", "Index", "Kitaplar", new { area = "" }, new { @class = "nav-link" })
                             </li>
                             <li>
+                                @Html.ActionLink("Emanet Kitaplar", "Index", "EmanetKitaplar", new { area = "" }, new { @class = "nav-link" })
+                            </li>
+                            <li>
                                 @Html.ActionLink("Duyurular", "Index", "Duyurular", new { area = "" }, new { @class = "nav-link" })
                             </li>
                             <li>
                                 @Html.ActionLink("Kullanıcılar", "Index", "Kullanicilar", new { area = "" }, new { @class = "nav-link" })
                             </li>
+                            <li>
+                                @Html.ActionLink("Roller", "Index", "Roller", new { area = "" }, new { @class = "nav-link" })
+                            </li>
+                            <li>
+                                @Html.ActionLink("Üyeler", "Index", "Uyeler", new { area = "" }, new { @class = "nav-link" })
+                            </li>
+                          
+                         
 
                             @*<li>
                                     <a href="invoice.html">Invoice</a>

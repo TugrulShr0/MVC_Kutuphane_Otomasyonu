@@ -21,7 +21,7 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Mapping
             this.Property(x => x.KitapID).IsRequired();
             this.Property(x => x.KitapSayisi).IsRequired();
             this.Property(x => x.EmanetTarihi).IsRequired();
-            this.Property(x => x.IadeTarihi).IsRequired();
+           // this.Property(x => x.IadeTarihi).IsRequired();
             this.Property(x => x.ID).HasColumnName("id");//Database deki kolon adı
             this.Property(x => x.UyeID).HasColumnName("UyeID");
             this.Property(x => x.KitapID).HasColumnName("KitapID");

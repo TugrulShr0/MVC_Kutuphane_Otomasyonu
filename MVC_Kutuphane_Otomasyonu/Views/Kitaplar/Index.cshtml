@@ -40,7 +40,7 @@
                                 <td>
                                     @Html.ActionLink("Düzenle", "Duzenle", new { id = item.ID }, new { @class = "btn btn-primary btn-sm" }) |
                                     @Html.ActionLink("Detay", "Detay", new { id = item.ID }, new { @class = "btn btn-info btn-sm" }) |
-                                    @Html.ActionLink("Sil", "Sil", new { id = item.ID }, new { @class = "btn btn-danger btn-sm", onclick = "return confirm('Bu kitabı silmek istediğinize emin misiniz?');" })
+                                    @Html.ActionLink("Sil", "Sil","Kitaplar", new { id = item.ID }, new { @class = "btn btn-danger btn-sm", onclick = "return confirm('Bu kitabı silmek istediğinize emin misiniz?');" })
                                 </td>
                             </tr>
                         }

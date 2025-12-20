@@ -1,0 +1,51 @@
+﻿@model List<MVC_Kutuphane_Otomasyonu_Entities.Model.EmanetKitaplar>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg">
+        <div class="ibox">
+            <div class="ibox-head">
+               Emanet Kitap Listesi
+            </div>
+            <div class="ibox-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Üye</th>
+                            <th>Kitap</th>
+                            <th>Kitap Sayısı</th>
+                            <th>Aldığı Tarih</th>
+                            <th>İade Tarihi</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ID</td>
+                                <td>@(item.Uyeler.AdSoyad)</td>
+                                <td>@item.kitaplar.KitapAdı</td>
+                                <td>@item.KitapSayisi</td>
+                                <td>@item.EmanetTarihi</td> 
+                                <td>@item.IadeTarihi</td> 
+                                <td>
+                                    @Html.ActionLink("Düzenle", "Duzenle", new { id = item.ID }, new { @class = "btn btn-warning btn-sm" }) |
+                                    @Html.ActionLink("Sil", "Sil", "EmanetKitaplar", new { id = item.ID }, new { @class = "btn btn-danger btn-sm delete", onclick = "return confirm('Kayıt silinsin mi?');" })|
+                                    @Html.ActionLink("Teslim Al", "TeslimAl", "EmanetKitaplar", new { id = item.ID }, new { @class = "btn btn-primary btn-sm ", onclick = "return confirm(Kitap iade edilsin mi?'); "})
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="form-group">
+                    @Html.ActionLink("Emanet Kitap Ver", "EmanetKitapVer", null, new { @class = "btn btn-success" })    @Html.ActionLink("Excele Aktar", "ExceleAktar", "Istatistikler", null, new { @class = "btn btn-dark" })  @Html.ActionLink("Yazdır", "Yazdir", null, new { @class = "btn btn-primary" })
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

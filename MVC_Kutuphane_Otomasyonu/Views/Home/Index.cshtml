@@ -1,33 +1,120 @@
 ﻿@{
+    Layout = "~/Views/Shared/_GenelLayout.cshtml";
     ViewBag.Title = "Home Page";
 }
 
 <main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">ASP.NET</h1>
-        <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-        <p><a href="https://asp.net" class="btn btn-primary btn-md">Learn more &raquo;</a></p>
-    </section>
+    <style>
+        /* Tasarımın Gövdesi */
+        .hero-section {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 60px 20px;
+            border-radius: 20px;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
 
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
+            .hero-section h2 {
+                font-weight: 700;
+                margin-bottom: 20px;
+                letter-spacing: 1px;
+            }
+
+            .hero-section p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+                max-width: 800px;
+                margin: 0 auto;
+                line-height: 1.6;
+            }
+
+        /* Bilgi Kartları Bölümü */
+        .info-card {
+            background: #fff;
+            border: none;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            border-top: 5px solid #3498db;
+            height: 100%;
+        }
+
+            .info-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+            }
+
+            .info-card h4 {
+                color: #2c3e50;
+                margin-bottom: 15px;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+            }
+
+            .info-card p {
+                color: #666;
+                font-size: 0.95rem;
+                margin-bottom: 0;
+            }
+
+        /* Satır Düzenlemesi */
+        .content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .col-custom {
+            flex: 1;
+            min-width: 300px;
+        }
+    </style>
+
+    <main class="container">
+        <section class="hero-section" aria-labelledby="aspnetTitle">
+            <h2 id="aspnetTitle">Kütüphane Otomasyonuna Hoş Geldiniz</h2>
             <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
+                Bu proje, kütüphane işlemlerini daha düzenli ve kolay hale getirmek amacıyla geliştirilmiştir.
+                Sistem üzerinden kitaplar ve üyeler takip edilebilir, ödünç alma ve iade işlemleri
+                hızlı bir şekilde gerçekleştirilebilir.
             </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
         </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
+
+        <div class="content-wrapper">
+            <section class="col-custom" aria-labelledby="gettingStartedTitle">
+                <div class="info-card">
+                    <h4 id="gettingStartedTitle">📌 Sistem Hakkında</h4>
+                    <p>
+                        Bu kütüphane otomasyonu, kitap ve üye bilgilerinin dijital ortamda tutulmasını sağlar.
+                        Kitap ekleme, silme, güncelleme ve ödünç işlemleri kolayca yönetilebilir.
+                    </p>
+                </div>
+            </section>
+
+            <section class="col-custom">
+                <div class="info-card" style="border-top-color: #e67e22;">
+                    <h4>🚀 Hızlı Erişim</h4>
+                    <p>
+                        Üst menüyü kullanarak kitap listesine ulaşabilir, yeni üye kaydı yapabilir
+                        veya aktif ödünç işlemlerini anlık olarak görüntüleyebilirsiniz.
+                    </p>
+                </div>
+            </section>
+
+            <section class="col-custom" style="border-top-color: #27ae60;">
+                <div class="info-card">
+                    <h4>📊 Amaç</h4>
+                    <p>
+                        Kullanıcı dostu yapısı sayesinde kütüphane yönetimi pratik ve anlaşılır
+                        bir şekilde sunulmaktadır. Verimliliği artırmak için tasarlanmıştır.
+                    </p>
+                </div>
+            </section>
+        </div>
 </main>

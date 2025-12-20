@@ -14,8 +14,8 @@ using System.Web.Security;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    //[Authorize(Roles ="Admin,Moderatör")]
-    [AllowAnonymous]
+    [Authorize(Roles ="Admin,Moderatör")]
+   // [AllowAnonymous]
     public class KullanicilarController : Controller
     {
         // GET: Kullanicilar
@@ -23,6 +23,20 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         KullanıcılarDAL kullanicilarDal = new KullanıcılarDAL();
         KullanıcıRolleriDAL kullaniciRolleriDal = new KullanıcıRolleriDAL();
         RollerDAL rollerDal = new RollerDAL();
+        KullanıcıHareketleriDAL kullaniciHareketleriDal = new KullanıcıHareketleriDAL();
+
+        public void KullaniciHareketleri(int kullaniciId, int islemYapanId,string aciklama)
+        {
+                var model=new KullanıcıHareketleri
+                {
+                KullanıcıID = kullaniciId,
+                islemYapan = islemYapanId,
+                Aciklama = aciklama,
+                Tarih = DateTime.Now
+                 };
+            kullaniciHareketleriDal.insertupdate(context, model);
+            kullaniciHareketleriDal.save(context);
+        }
         public ActionResult Index()
         {
             var model= kullanicilarDal.GetAll(context);
@@ -44,6 +58,15 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             {
                 kullanicilarDal.insertupdate(context, entity);
                 kullanicilarDal.save(context);
+
+
+                int kullaniciId=context.Kullanicilar.Max(x=>x.ID);
+                var userName = User.Identity.Name;
+                var model = kullanicilarDal.GetByFilter(context, x => x.Email == userName);
+                var islemYapan = model.ID;
+                string aciklama = model.AdSoyad + " adlı kullanıcı yeni bir kulllanıcı eklendi.";
+                KullaniciHareketleri(kullaniciId, islemYapan, aciklama);
+
                 return RedirectToAction("Index2");
             }
         }
@@ -134,6 +157,12 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             if (model!=null)
             {
                 FormsAuthentication.SetAuthCookie(entity.Email, false);
+            
+                int islemYapanId = model.ID;
+                string aciklama = model.AdSoyad + " adlı kullanıcı giriş yaptı.";
+                KullaniciHareketleri(islemYapanId, islemYapanId, aciklama);
+
+
                 return RedirectToAction("Index2", "KitapTurleri");
             }
             ViewBag.error = "Geçersiz kullanıcı adı veya şifre";
@@ -168,11 +197,19 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
                         ViewBag.kabulError = "Lütfen Şartları Kabul Ettiğinizi Onaylayın!";
                         return View(entity);
                     }
-                    else
+                    else//şartlar kabul edildi
                     {
                         entity.KayitTarihi = DateTime.Now;
                         kullanicilarDal.insertupdate(context,entity);
                         kullanicilarDal.save(context);
+
+                        int kullaniciId = context.Kullanicilar.Max(x => x.ID);
+                       
+                      
+                        string aciklama = "  Yeni bir kulllanıcı oluşturuldu.";
+                        KullaniciHareketleri(kullaniciId, kullaniciId, aciklama);
+
+
                         return RedirectToAction("Login");
                     }
                 }
@@ -231,6 +268,12 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             }
 
             return View(entity);
+        }
+        public ActionResult Cikis()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Login");
+
         }
         //public ActionResult SifremiUnuttum(Kullanicilar entity)
         //{

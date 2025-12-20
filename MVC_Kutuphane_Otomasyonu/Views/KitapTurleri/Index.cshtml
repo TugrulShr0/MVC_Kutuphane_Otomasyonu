@@ -46,17 +46,30 @@
                         }
                     </tbody>
                 </table>
-                @Html.PagedListPager(Model, page => Url.Action("Index", "KitapTurleri", new { page, ara = Request.QueryString["ara"] }), new PagedListRenderOptions
-           {
-               FunctionToTransformEachPageLink = (li, a) =>
-               {
+                @Html.PagedListPager(Model, page => Url.Action("Index2", new { page, ara = Request.QueryString["ara"] }),
+    new PagedListRenderOptions
+    {
+        UlElementClasses = new[] { "pagination" },
+        LiElementClasses = new[] { "page-item" },
+        // Sayfa linklerine Bootstrap class'ı eklemek için:
+        FunctionToTransformEachPageLink = (li, a) =>
+        {
+            a.AddCssClass("page-link");
+            li.InnerHtml = a.ToString();
+            return li;
+        }
+    })
+                @*@Html.PagedListPager(Model, page => Url.Action("Index", "KitapTurleri", new { page, ara = Request.QueryString["ara"] }), new PagedListRenderOptions
+        {
+            FunctionToTransformEachPageLink = (li, a) =>
+            {
 
-                   a.AddCssClass("page-link");
-                   li.InnerHtml = a.ToString();
-                   return li;
-               },
+                a.AddCssClass("page-link");
+                li.InnerHtml = a.ToString();
+                return li;
+            },
 
-           })
+        })*@
 
                 <a href="/KitapTurleri/Ekle" class="btn btn-success">Yeni</a>
             </div>

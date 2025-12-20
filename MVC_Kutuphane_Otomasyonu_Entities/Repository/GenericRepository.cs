@@ -20,16 +20,65 @@ namespace MVC_Kutuphane_Otomasyonu_Entities.Repository
             context.Set<TEntity>().Remove(model);
         }
 
-        public List<TEntity> GetAll(TContext context, Expression<Func<TEntity, bool>> filter = null,string tbl =null)
+        public List<TEntity> GetAll(TContext context, Expression<Func<TEntity, bool>> filter = null,params string[] tbl)
         {
+            IQueryable<TEntity> query = context.Set<TEntity>();
 
-            return filter == null ? tbl==null ?  context.Set<TEntity>().ToList(): context.Set<TEntity>().Include(tbl).ToList()
-                : tbl==null ? context.Set<TEntity>().Where(filter).ToList() : context.Set<TEntity>().Include(tbl).Where(filter).ToList();
+            // 1. Önce ilişkili tabloları (Join/Include) ekliyoruz
+            if (tbl != null)
+            {
+                foreach (var item in tbl)
+                {
+                    query = query.Include(item);
+                }
+            }
+
+            // 2. Eğer filtre gönderilmişse (null değilse) sorguya ekliyoruz
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            return query.ToList();
+
+            //null hatası vardı
+            //IQueryable <TEntity> query = context.Set<TEntity>();
+            //foreach (var item in tbl) 
+            //{
+            //    query = query.Where(filter).Include(item);
+
+            //}
+            //return query.ToList();
+            //return filter == null ? tbl==null ?  context.Set<TEntity>().ToList(): context.Set<TEntity>().Include(tbl).ToList()
+            //    : tbl==null ? context.Set<TEntity>().Where(filter).ToList() : context.Set<TEntity>().Include(tbl).Where(filter).ToList();
         }
 
-        public TEntity GetByFilter(TContext context, Expression<Func<TEntity, bool>> filter, string tbl=null)
+        public TEntity GetByFilter(TContext context, Expression<Func<TEntity, bool>> filter, params string[] tbl)
         {
-            return tbl ==null ? context.Set<TEntity>().FirstOrDefault(filter) : context.Set<TEntity>().Include(tbl).FirstOrDefault(filter);//Filtreye göre ilk veriyi döner
+
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            // İlişkili tabloları ekle
+            if (tbl != null)
+            {
+                foreach (var item in tbl)
+                {
+                    query = query.Include(item);
+                }
+            }
+
+            // Filtreye uyan ilk kaydı getir
+            return query.FirstOrDefault(filter);
+
+            //null hatası
+            //IQueryable<TEntity> query = context.Set<TEntity>();
+            //foreach (var item in tbl)
+            //{
+            //    query = query.Include(item);
+
+            //}
+            //return query.FirstOrDefault(filter);
+            //return tbl ==null ? context.Set<TEntity>().FirstOrDefault(filter) : context.Set<TEntity>().Include(tbl).FirstOrDefault(filter);//Filtreye göre ilk veriyi döner
         }
 
         public TEntity GetByID(TContext context, int? id)
