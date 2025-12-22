@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    [Authorize(Roles = "Admin,Moderatör")]
+    [Authorize(Roles = "Admin")]
     //[AllowAnonymous]
     public class KullaniciRolleriController : Controller
     {

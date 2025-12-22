@@ -10,12 +10,14 @@ using System.Web.Mvc;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
- 
+
+    [Authorize]
     public class KitapTurleriController : Controller
     {
         // GET: KitapTurleri
         KutuphaneContext context = new KutuphaneContext();
         KitapTurleriDAL kitapTurleriDAL = new KitapTurleriDAL();
+        [AllowAnonymous]
         public ActionResult Index2(string ara,int? page)
         {
             var model = kitapTurleriDAL.GetAll(context).ToPagedList(page?? 1,3);
@@ -26,13 +28,14 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             return View("Index",model); ;
         }
         //get
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Ekle() 
         {
             return View(new KitapTurleri());
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-       
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Ekle(KitapTurleri kitapTurleri)
         {
             if (ModelState.IsValid)
@@ -44,6 +47,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             }
             return View(kitapTurleri);
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(int id)
         {
             var model = kitapTurleriDAL.GetByID(context, id);
@@ -53,6 +57,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(KitapTurleri kitapTurleri)
         {
             if (ModelState.IsValid)
@@ -63,6 +68,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             }
             return View(kitapTurleri);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Sil(int? id)
         {
             kitapTurleriDAL.delete(context, k => k.ID == id);

@@ -14,8 +14,8 @@ using System.Web.Security;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    [Authorize(Roles ="Admin,Moderatör")]
-   // [AllowAnonymous]
+    [Authorize]
+ 
     public class KullanicilarController : Controller
     {
         // GET: Kullanicilar
@@ -37,17 +37,20 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             kullaniciHareketleriDal.insertupdate(context, model);
             kullaniciHareketleriDal.save(context);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var model= kullanicilarDal.GetAll(context);
             return View(model);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Ekle()
         {
             return View();
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Ekle(Kullanicilar entity)
         {
             if (!ModelState.IsValid)
@@ -70,6 +73,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
                 return RedirectToAction("Index2");
             }
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(int? id)
         {
             if(id==null)
@@ -81,6 +85,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [ValidateAntiForgeryToken]
         [HttpPost]
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(Kullanicilar entity)
         {
             if (!ModelState.IsValid)
@@ -114,12 +119,14 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
                 return RedirectToAction("Index2");
             }
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Sil(int? id)
         {
             kullanicilarDal.delete(context, k => k.ID == id);
             kullanicilarDal.save(context);
             return RedirectToAction("Index2");
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Index2()
         {
             var kullanicilar = kullanicilarDal.GetAll(context,tbl: "KullanıcıRolleri");
@@ -275,40 +282,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             return RedirectToAction("Login");
 
         }
-        //public ActionResult SifremiUnuttum(Kullanicilar entity)
-        //{
-        //    var model = kullanicilarDal.GetByFilter(context, x => x.Email == entity.Email);
-
-        //    if (model == null)
-        //    {
-        //        ViewBag.hata = "Böyle bir e-mail adresi bulunamadı.";
-        //        return View();
-        //    }
-
-        //    // Yeni şifre oluştur
-        //    Guid rastgele = Guid.NewGuid();
-        //    model.Sifre = rastgele.ToString().Substring(0, 8);
-        //    kullanicilarDal.save(context);
-
-        //    // Mail gönder
-        //    SmtpClient client = new SmtpClient("smtp.office365.com", 587);
-        //    client.EnableSsl = true;
-        //    client.UseDefaultCredentials = false;
-        //    client.Credentials = new NetworkCredential("tugrlshr@hotmail.com", "UYGL_APP_PASS");
-
-        //    MailMessage mail = new MailMessage();
-        //    mail.From = new MailAddress("tugrlshr@hotmail.com", "Şifre Sıfırlama");
-        //    mail.To.Add(model.Email);
-        //    mail.IsBodyHtml = true;
-        //    mail.Subject = "Şifre Değiştirme İsteği";
-        //    mail.Body = "Merhaba " + model.AdSoyad + "<br/>" +
-        //                "Kullanıcı Adınız: " + model.KullanıcıAdı + "<br/>" +
-        //                "Yeni Şifreniz: " + model.Sifre;
-
-        //    client.Send(mail);
-
-        //    return RedirectToAction("Login");
-        //}
+      
 
     }
 }

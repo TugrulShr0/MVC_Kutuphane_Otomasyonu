@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    [Authorize(Roles ="Admin,Moderatör")]
+    [Authorize]
     public class KitaplarController : Controller
     {
         // GET: Kitaplar
@@ -34,11 +34,13 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
 
 
         }
+        [AllowAnonymous]
         public ActionResult Index()
         {
             var model = KitaplarDal.GetAll(context,null,"KitapTurleri");
             return View(model);
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Ekle()
         {
             ViewBag.liste= new SelectList(context.KitapTurleri,"ID","KitapTuru");
@@ -46,7 +48,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Ekle(Kitaplar entity)
         {
             if (!ModelState.IsValid)
@@ -66,6 +68,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
 
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(int? id)
         {
             if (id==null)
@@ -78,7 +81,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(Kitaplar entity)
         {
             if (!ModelState.IsValid)
@@ -97,13 +100,14 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             KitapKayitHareketleri(kullaniciId, kitapId, modelKullanici.KullanıcıAdı + " kullanıcısı kitap üzerinde değişiklik yaptı.", "Kitap Düzenleme İşlemi Gerçekleştirildi");
             return RedirectToAction("Index");
         }
-
+        [AllowAnonymous]
         public ActionResult Detay(int? id) 
         { 
             var model = KitaplarDal.GetByFilter(context, x => x.ID == id,"KitapTurleri");
             return View(model);
 
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Sil(int? id)
         {
             if (id==null)

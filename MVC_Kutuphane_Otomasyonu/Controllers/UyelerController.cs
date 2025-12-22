@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Moderatör")]
     public class UyelerController : Controller
     {
         // GET: Uyeler

@@ -11,7 +11,7 @@ using System.Data.Entity;
 using DocumentFormat.OpenXml.Wordprocessing;
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
-    //[AllowAnonymous]
+    [Authorize]
     public class EmanetKitaplarController : Controller
     {
         // GET: EmanetKitaplar
@@ -21,11 +21,21 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         KitapHareketleriDAL kitapHareketleriDAL = new KitapHareketleriDAL();
         public ActionResult Index()
         {
-            //  var model= EmanetKitaplarDAL.GetAll(context,x=>x.IadeTarihi== null,"kitaplar","Uyeler");
-            var model = EmanetKitaplarDAL.GetAll(context, null, "kitaplar", "Uyeler");
-            return View(model);
+            // Eğer giriş yapan kişi Admin veya Moderatör ise her şeyi görsün
+            if (User.IsInRole("Admin") || User.IsInRole("Moderatör"))
+            {
+                var model = EmanetKitaplarDAL.GetAll(context, null, "kitaplar", "Uyeler");
+                return View(model);
+            }
+            else
+            {
+                // Eğer normal kullanıcı ise sadece KENDİ emanetlerini görsün
+                var email = User.Identity.Name;
+                var model = EmanetKitaplarDAL.GetAll(context, x => x.Uyeler.Email == email, "kitaplar", "Uyeler");
+                return View(model);
+            }
         }
-
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Yazdir()
         {
             var model = EmanetKitaplarDAL.GetAll(context, null, "kitaplar", "Uyeler");
@@ -38,13 +48,14 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
                 CustomSwitches = "--disable-smart-shrinking"
             };
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult EmanetListesi()
         {
             var model = EmanetKitaplarDAL.GetAll(context, null, "kitaplar", "Uyeler");
             return View(model);
         }
 
-
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult EmanetKitapVer()
         {
             ViewBag.Uyeliste = new SelectList(context.Uyeler, "ID", "AdSoyad");
@@ -53,6 +64,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult EmanetKitapVer(EmanetKitaplar entity)
         {
             if (ModelState.IsValid)
@@ -83,6 +95,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             ViewBag.Kitapliste = new SelectList(context.Kitaplar, "ID", "KitapAdı");
             return View("Index");
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(int? id)
         {
             if (id == null)
@@ -96,6 +109,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult Duzenle(EmanetKitaplar entity)
         {
             if (ModelState.IsValid)
@@ -122,6 +136,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             ViewBag.Kitapliste = new SelectList(context.Kitaplar, "ID", "KitapAdı", entity.KitapID);
             return View(entity);
         }
+        [Authorize(Roles = "Admin")]
         public ActionResult Sil(int? id)
         {
             if (id == null)
@@ -133,6 +148,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             EmanetKitaplarDAL.save(context);
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public ActionResult TeslimAl(int? id)
         {
             var model=EmanetKitaplarDAL.GetByFilter(context,x=>x.ID==id);

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
+    [Authorize(Roles = "Admin,Moderatör")]
     public class IstatistiklerController : Controller
     {
         KutuphaneContext context = new KutuphaneContext();

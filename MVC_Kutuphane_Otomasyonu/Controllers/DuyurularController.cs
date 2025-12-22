@@ -10,20 +10,25 @@ using System.Web.Services.Description;
 
 namespace MVC_Kutuphane_Otomasyonu.Controllers
 {
+    [Authorize]
     public class DuyurularController : Controller
     {
         // GET: Duyurular
         KutuphaneContext context = new KutuphaneContext();
         DuyurularDAL duyurularDAL = new DuyurularDAL();
+
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
+        [AllowAnonymous]
         public JsonResult DuyuruList()
         {
             var model = duyurularDAL.GetAll(context);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        [Authorize(Roles = "Admin,Moderatör")]
         public JsonResult DuyuruEkle(Duyurular entity)
         {
             // ID > 0 ise UPDATE yapılıyor demektir. ID validasyonunu temizle.
@@ -73,13 +78,14 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
                 x => x.Value.Errors.Select(a => a.ErrorMessage).ToArray()
             );
             return Json(new { success = false, errors }, JsonRequestBehavior.AllowGet);
-        }         
-        
+        }
+        [AllowAnonymous]
         public JsonResult DuyuruGetir(int? id)
         {
           var model =  duyurularDAL.GetByFilter(context, x=>x.ID==id);
             return Json(model, JsonRequestBehavior.AllowGet);
         }
+        [Authorize(Roles = "Admin")]
         public JsonResult DuyuruSil(int? id)
         {
             duyurularDAL.delete(context, x => x.ID == id);
@@ -87,6 +93,7 @@ namespace MVC_Kutuphane_Otomasyonu.Controllers
             return Json(new { success = true });
         }
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public JsonResult SeciliDuyuruSil(List<int> selectedIds)
         {
             if (selectedIds!=null)
